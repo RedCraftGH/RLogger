@@ -1,6 +1,6 @@
 <?php
 
-namespace RedCraftPE\Logger;
+namespace RedCraftPE;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\Command;
