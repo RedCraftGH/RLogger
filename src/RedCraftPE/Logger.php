@@ -39,16 +39,44 @@ class Logger extends PluginBase implements Listener {
     //start logging here for X seconds, if (log out) kill:
     $entity = $event->getEntity();
     $damager = $event->getDamager();
+    $loggedArray = $this->logger->get("Logged", []);
     
     if ($entity instanceof Player && $damager instanceof Player) {
     
       $entityName = $entity->getName();
-      $loggedArray = $this->logger->get("Logged", []);
-      $loggedArray[] = $entity->getName();
+      $damagerName = $damager->getName();
+      
+      if (in_array($entityName, $loggedArray) && in_array($damagerName, $loggedArray)) {
+    
+        return;
+      }
+      if (in_array($entityName, $loggedArray) && !in_array($damagerName, $loggedArray)) {
+        
+        $loggedArray[] = $damagerName;
+        $this->logger->set("Logged", $loggedArray);
+        $this->logger->save();
+        $this->getScheduler()->scheduleDelayedTask(new Log($damagerName), 200);
+        $damager->sendMessage(TextFormat::RED . "Logging out in the next 10 seconds will kill you!");
+        return;
+      }
+      if (!in_array($entityName, $loggedArray) && in_array($damagerName, $loggedArray)) {
+        
+        $loggedArray[] = $entityName;
+        $this->logger->set("Logged", $loggedArray);
+        $this->logger->save();
+        $this->getScheduler()->scheduleDelayedTask(new Log($entityName), 200);
+        $entity->sendMessage(TextFormat::RED . "Logging out in the next 10 seconds will kill you!");
+        return;
+      }
+      
+      $loggedArray[] = $entityName;
+      $loggedArray[] = $damagerName;
       $this->logger->set("Logged", $loggedArray);
       $this->logger->save();
       $entity->sendMessage(TextFormat::RED . "Logging out in the next 10 seconds will kill you!");
+      $damager->sendMessage(TextFormat::RED . "Logging out in the next 10 seconds will kill you!");
       $this->getScheduler()->scheduleDelayedTask(new Log($entityName), 200);
+      $this->getScheduler()->scheduleDelayedTask(new Log($damagerName), 200);
       return;
     }
   }
