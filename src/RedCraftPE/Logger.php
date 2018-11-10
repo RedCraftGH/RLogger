@@ -61,6 +61,8 @@ class Logger extends PluginBase implements Listener {
     
       $player->kill();
       $event->setQuitMessage(TextFormat::WHITE . $player->getName() . " has run away from a fight! And it will cost him his life!");
+      $this->logger->removeNested("Logged", $entityName);
+      $this->logger->save();
       return;
     }
   }
