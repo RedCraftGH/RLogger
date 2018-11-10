@@ -21,7 +21,7 @@ class Logger extends PluginBase implements Listener {
   
     //the usual onEnable stuff will go here:
     $this->getServer()->getPluginManager()->registerEvents($this, $this);
-    self::$instance = $instance;
+    self::$instance = $this;
     
     if (!file_exists($this->getDataFolder() . "logger.yml")) {
       
