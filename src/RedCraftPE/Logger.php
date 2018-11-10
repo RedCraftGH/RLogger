@@ -19,7 +19,7 @@ class Logger extends PluginBase implements Listener {
 
   public function onEnable(): void {
   
-    //the usual onEnable stuff will go here
+    //the usual onEnable stuff will go here:
     $this->getServer()->getPluginManager()->registerEvents($this, $this);
     self::$instance = $instance;
     
