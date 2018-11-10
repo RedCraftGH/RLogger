@@ -66,7 +66,7 @@ class Logger extends PluginBase implements Listener {
       return;
     }
   }
-  public function getInstance(): self {
+  public static function getInstance(): self {
   
     return self::$instance;
   }
